@@ -1,0 +1,14 @@
+/* Ajustement du logo dans la barre de navigation */
+.md-header-nav__button.md-logo img,
+.md-header-nav__button.md-logo svg {
+  width: 40px;  /* Ajustez selon vos besoins */
+  height: auto;
+}
+
+/* Ajustement du logo en mode mobile */
+@media screen and (max-width: 76.1875em) {
+  .md-nav__button.md-logo img,
+  .md-nav__button.md-logo svg {
+    width: 36px;  /* Taille légèrement réduite pour mobile */
+  }
+}
