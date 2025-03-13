@@ -1,8 +1,8 @@
 site_name: Documentation Wisechain
-repo_name: wisechain/documentation
-repo_url: https://github.com/New-Wisechain
-site_url: https://wisechain.fr/
-copyright: © 2023 Wisechain
+repo_name: srblx/wisechain-docs
+repo_url: https://github.com/Srblx/wisechain-docs
+site_url: https://Srblx.github.io/wisechain-docs/
+copyright: © 2025 Wisechain
 
 theme:
   name: material
@@ -71,6 +71,7 @@ markdown_extensions:
 nav:
   - Accueil: index.md
   - Démarrage Rapide: overview.md
+  - Technologies et outils: technologies.md
   # - Guide Utilisateur: 
   #   - Introduction: introduction.md
   - Architecture et Sécurité: architecture.md
