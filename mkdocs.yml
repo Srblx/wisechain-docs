@@ -1,0 +1,97 @@
+site_name: Documentation Wisechain
+repo_name: srblx/wisechain-docs
+repo_url: https://github.com/Srblx/wisechain-docs
+site_url: https://Srblx.github.io/wisechain-docs/
+copyright: © 2025 Wisechain
+
+theme:
+  name: material
+  logo: /assets/img/logo.svg
+  favicon: /assets/img/logo.svg
+  palette:
+    #  Mode clair
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/weather-sunny
+        name: Passer au mode sombre
+    # Mode sombre
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep-purple
+      accent: pink
+      toggle:
+        icon: material/weather-night
+        name: Passer au mode clair
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.indexes
+    - navigation.top
+    - toc.follow
+    - toc.integrate
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+  highlightjs: true
+  hljs_languages:
+    - yaml
+    - rust
+    - javascript
+    - typescript
+    - bash
+    - python
+
+extra_css:
+  - assets/css/extra.css
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - footnotes
+  - meta
+  - md_in_html
+  - admonition
+  - toc:
+      permalink: true
+      toc_depth: 4
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+
+nav:
+  - Accueil: index.md
+  - Démarrage Rapide: overview.md
+  - Technologies et outils: technologies.md
+  # - Guide Utilisateur: 
+  #   - Introduction: introduction.md
+  - Architecture et Sécurité: architecture.md
+  - Versionning ( Git ): versioning.md
+  # - Documentation API: documentation_API.md
+  - Base de Données: db.md
+  - Tests: test.md
+  - Hebergeur: hosting.md
+  - Déploiement: deploiement.md
+  - CI/CD: ci-cd.md
+  # - À Propos: about.md
+
+plugins:
+  - search
+  - mermaid2
+  
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Srblx/New-Wisechain
+    - icon: fontawesome/brands/discord
+      link: https://wisechain.fr/
