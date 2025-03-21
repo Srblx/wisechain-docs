@@ -167,7 +167,7 @@ services:
 # Documentation Wisechain
 
 <div class="hero">
-  <img src="assets/img/logo.svg" alt="Logo Wisechain" class="hero-logo" />
+  <img src="/wisechain-docs/assets/img/logo.svg" alt="Logo Wisechain" class="hero-logo" />
   <h1>Bienvenue dans la documentation Wisechain</h1>
   <p>Tout ce dont vous avez besoin pour comprendre, déployer et développer sur la plateforme Wisechain</p>
 </div>

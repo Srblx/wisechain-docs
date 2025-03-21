@@ -1,118 +1,6 @@
 # Architecture de Wisechain
 ## Fonctionnalités NextJS
 
-### Server-Side Rendering (SSR)/Client-Side Rendering (CSR)
-
-J'utilise le SSR pour les pages qui nécessitent des données au moment du chargement et du CSR pour les pages qui nécessitent des données au moment du chargement.
-
-## Middleware d'authentification
-
-J'utilise le middleware NextJS pour protéger certaines routes :
-
-```typescript
-export async function middleware(request: NextRequest) {
-  const token = request.cookies.get('token')?.value;
-
-  if ((request.nextUrl.pathname.startsWith('/api-doc') || 
-       request.nextUrl.pathname.startsWith('/backoffice')) && !token) {
-    return NextResponse.redirect(new URL('/', request.url));
-  }
-
-  const response = NextResponse.next();
-
-  response.headers.set('X-DNS-Prefetch-Control', 'on');
-  response.headers.set('Strict-Transport-Security', 'max-age=63072000');
-  response.headers.set('X-Frame-Options', 'SAMEORIGIN');
-  response.headers.set('X-Content-Type-Options', 'nosniff');
-  response.headers.set('Referrer-Policy', 'origin-when-cross-origin');
-  response.headers.set(
-    'Permissions-Policy',
-    'camera=(), microphone=(), geolocation=(), browsing-topics=()'
-  );
-
-  async function verifyRolesAndRedirect(allowedRoles: Roles[]) {
-    if (!token) {
-      return NextResponse.redirect(new URL('/', request.url));
-    }
-
-    try {
-      const { payload } = await jwtVerify(token, JWT_SECRET);
-
-      if (!payload || typeof payload !== 'object' || !('roles' in payload)) {
-        throw new Error('Invalid token payload');
-      }
-
-      const userRoles = Array.isArray(payload.roles) ? payload.roles : [payload.roles];
-
-      if (!userRoles.some(role => allowedRoles.includes(role))) {
-        return NextResponse.redirect(new URL('/', request.url));
-      }
-
-      return null;
-    } catch (error) {
-      console.error('Erreur de vérification du token:', error);
-      return NextResponse.redirect(new URL('/', request.url));
-    }
-  }
-
-  if (request.nextUrl.pathname.startsWith('/backoffice')) {
-    const redirectResponse = await verifyRolesAndRedirect([
-      Roles.ADMIN,
-      Roles.DEVELOPER,
-      Roles.REDACTOR,
-      Roles.MODERATOR
-    ]);
-    if (redirectResponse) return redirectResponse;
-  }
-
-  if (request.nextUrl.pathname.startsWith('/api-doc')) {
-    const redirectResponse = await verifyRolesAndRedirect([
-      Roles.ADMIN,
-      Roles.DEVELOPER
-    ]);
-    if (redirectResponse) return redirectResponse;
-  }
-  
-  if (token) {
-    response.cookies.set('token', token, {
-      httpOnly: true,
-      path: '/',
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-    });
-  }
-
-  return response;
-}
-
-export const config = {
-  matcher: ['/:path*', '/api-doc', '/api-doc/:path*', '/backoffice', '/backoffice/:path*'],
-};
-```
-
-## Prisma
-
-Mon application utilise Prisma comme ORM pour interagir avec la base de données MySQL. <a href="/db/">Documentation Prisma</a>
-
-### Client Prisma Singleton
-
-Pour éviter de créer trop d'instances du client Prisma, j'utilise un pattern singleton :
-```typescript
-declare global {
-  var prisma: PrismaClient | undefined
-}
-
-const prisma = global.prisma || new PrismaClient()
-
-if (process.env.NODE_ENV !== 'production') global.prisma = prisma
-
-export default prisma
-```
-
-### API Routes
-
-J'utilise les API Routes de NextJS pour créer notre API backend 
-
 ## Structure du projet
 
 ```
@@ -226,6 +114,15 @@ Wisechain est une application full-stack construite avec les technologies suivan
 | Staging | https://staging.wisechain.fr | Environnement de pré-production |
 | Développement | Local | Environnement local des développeurs |
 
+
+### Server-Side Rendering (SSR)/Client-Side Rendering (CSR)
+
+J'utilise le SSR pour les pages qui nécessitent des données au moment du chargement et du CSR pour les pages qui nécessitent des données au moment du chargement.
+
+### API Routes
+
+J'utilise les API Routes de NextJS pour créer notre API backend 
+
 ## Sécurité
 
 - **HTTPS** : Toutes les communications sont chiffrées via SSL/TLS
@@ -235,11 +132,116 @@ Wisechain est une application full-stack construite avec les technologies suivan
 
 ## Scalabilité
 
-L'architecture est conçue pour être scalable horizontalement :
+L'architecture est conçue pour être scalable :
 
 - Conteneurs Docker sans état
 - Base de données séparée
 - Cache distribué
+
+
+## Middleware d'authentification
+
+J'utilise le middleware NextJS pour protéger certaines routes :
+
+```typescript
+export async function middleware(request: NextRequest) {
+  const token = request.cookies.get('token')?.value;
+
+  if ((request.nextUrl.pathname.startsWith('/api-doc') || 
+       request.nextUrl.pathname.startsWith('/backoffice')) && !token) {
+    return NextResponse.redirect(new URL('/', request.url));
+  }
+
+  const response = NextResponse.next();
+
+  response.headers.set('X-DNS-Prefetch-Control', 'on');
+  response.headers.set('Strict-Transport-Security', 'max-age=63072000');
+  response.headers.set('X-Frame-Options', 'SAMEORIGIN');
+  response.headers.set('X-Content-Type-Options', 'nosniff');
+  response.headers.set('Referrer-Policy', 'origin-when-cross-origin');
+  response.headers.set(
+    'Permissions-Policy',
+    'camera=(), microphone=(), geolocation=(), browsing-topics=()'
+  );
+
+  async function verifyRolesAndRedirect(allowedRoles: Roles[]) {
+    if (!token) {
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+
+    try {
+      const { payload } = await jwtVerify(token, JWT_SECRET);
+
+      if (!payload || typeof payload !== 'object' || !('roles' in payload)) {
+        throw new Error('Invalid token payload');
+      }
+
+      const userRoles = Array.isArray(payload.roles) ? payload.roles : [payload.roles];
+
+      if (!userRoles.some(role => allowedRoles.includes(role))) {
+        return NextResponse.redirect(new URL('/', request.url));
+      }
+
+      return null;
+    } catch (error) {
+      console.error('Erreur de vérification du token:', error);
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+  }
+
+  if (request.nextUrl.pathname.startsWith('/backoffice')) {
+    const redirectResponse = await verifyRolesAndRedirect([
+      Roles.ADMIN,
+      Roles.DEVELOPER,
+      Roles.REDACTOR,
+      Roles.MODERATOR
+    ]);
+    if (redirectResponse) return redirectResponse;
+  }
+
+  if (request.nextUrl.pathname.startsWith('/api-doc')) {
+    const redirectResponse = await verifyRolesAndRedirect([
+      Roles.ADMIN,
+      Roles.DEVELOPER
+    ]);
+    if (redirectResponse) return redirectResponse;
+  }
+  
+  if (token) {
+    response.cookies.set('token', token, {
+      httpOnly: true,
+      path: '/',
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+    });
+  }
+
+  return response;
+}
+
+export const config = {
+  matcher: ['/:path*', '/api-doc', '/api-doc/:path*', '/backoffice', '/backoffice/:path*'],
+};
+```
+
+## Prisma
+
+Mon application utilise Prisma comme ORM pour interagir avec la base de données MySQL. <a href="/db/">Documentation Prisma</a>
+
+### Client Prisma Singleton
+
+Pour éviter de créer trop d'instances du client Prisma, j'utilise un pattern singleton :
+```typescript
+declare global {
+  var prisma: PrismaClient | undefined
+}
+
+const prisma = global.prisma || new PrismaClient()
+
+if (process.env.NODE_ENV !== 'production') global.prisma = prisma
+
+export default prisma
+```
 
 ## Bonnes pratiques
 

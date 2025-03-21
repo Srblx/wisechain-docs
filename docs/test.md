@@ -74,7 +74,7 @@ describe('Signup', () => {
   .../
 ```
 <video width="100%" controls>
-  <source src="/assets/videos/signup.cy.ts.mp4" type="video/mp4">
+  <source src="/wisechain-docs/assets/videos/signup.cy.ts.mp4" type="video/mp4">
   Votre navigateur ne supporte pas la lecture de vidéos.
 </video>
 
@@ -107,7 +107,7 @@ it('should show error for incorrect current password', () => {
 .../
 ```
 <video width="100%" controls>
-  <source src="/assets/videos/profile.cy.ts.mp4" type="video/mp4">
+  <source src="/wisechain-docs/assets/videos/profile.cy.ts.mp4" type="video/mp4">
   Votre navigateur ne supporte pas la lecture de vidéos.
 </video>
 
