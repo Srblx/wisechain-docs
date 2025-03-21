@@ -6,8 +6,8 @@ copyright: © 2025 Wisechain
 
 theme:
   name: material
-  logo: /assets/img/logo.svg
-  favicon: /assets/img/logo.svg
+  logo: /wisechain-docs/assets/img/logo.svg
+  favicon: /wisechain-docs/assets/img/logo.svg
   palette:
     #  Mode clair
     - media: "(prefers-color-scheme: light)"
