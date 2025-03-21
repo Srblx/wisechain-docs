@@ -8,7 +8,7 @@ J'ai organisé mon développement autour de plusieurs branches principales :
 - `develop` : Ma branche de développement principal
 - `WC-2` à `WC-12` : Les branches de fonctionnalités (feature branches)
 
-![Diagramme des branches Git](/assets/img/git-tree.png)
+![Diagramme des branches Git](/wisechain-docs/assets/img/git-tree.png)
 - Les tests sont isolés dans une branche dédiée
 
 ## Détail de mon workflow
@@ -18,7 +18,7 @@ J'ai organisé mon développement autour de plusieurs branches principales :
 3. Les premières fonctionnalités (WC-2 à WC-4) ont été développées en parallèle
 4. J'ai ensuite fusionné ces branches dans `develop` une fois les développements terminés
 
-![Diagramme des branches Git](/assets/img/git-tree-detail.png)
+![Diagramme des branches Git](/wisechain-docs/assets/img/git-tree-detail.png)
 
 5. J'ai continué ce processus avec les fonctionnalités suivantes :
    - WC-5 à WC-7 : Deuxième vague de développement
